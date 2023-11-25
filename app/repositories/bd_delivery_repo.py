@@ -6,18 +6,29 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.delivery import Delivery
 from app.schemas.delivery import Delivery as DBDelivery
+from app.repositories.local_deliveryman_repo import DeliverymenRepo
 
 
 class DeliveryRepo():
     db: Session
+    deliveryman_repo: DeliverymenRepo
 
     def __init__(self) -> None:
         self.db = next(get_db)
+        self.deliveryman_repo = DeliverymenRepo()
+
+    def _map_to_model(self, delivery: DBDelivery) -> Delivery:
+        result = Delivery.from_orm(delivery)
+        if delivery.deliveryman_id != None:
+            result.deliveryman = self.deliveryman_repo.get_deliveryman_by_id(
+                delivery.deliveryman_id)
+
+        return result
 
     def get_deliveries(self) -> list[Delivery]:
         deliveries = []
         for d in self.db.query(DBDelivery).all():
-            deliveries = Delivery.from_orm(d)
+            deliveries.append(self._map_to_model(d))
         return deliveries
 
     def get_delivery_by_id(self, id: UUID) -> Delivery:
@@ -25,31 +36,30 @@ class DeliveryRepo():
             .query(DBDelivery) \
             .filter(DBDelivery.id == id) \
             .first()
-            
+
         if delivery == None:
             raise KeyError
-
-        return Delivery.from_orm(delivery)
+        return self._map_to_model(delivery)
 
     def create_delivery(self, delivery: Delivery) -> Delivery:
-        if len([d for d in deliveries if d.id == delivery.id]) > 0:
+        try:
+            db_delivery = DBDelivery(**dict(delivery))
+            self.db.add(db_delivery)
+            self.db.commit()
+            return self._map_to_model(db_delivery)
+        except:
             raise KeyError
 
-        deliveries.append(delivery)
-        return delivery
-
     def set_status(self, delivery: Delivery) -> Delivery:
-        for d in deliveries:
-            if d.id == delivery.id:
-                d.status = delivery.status
-                break
-
-        return delivery
+        db_delivery = self.db.query(DBDelivery).filter(
+            DBDelivery.id == delivery.id).first()
+        db_delivery.status = delivery.status
+        self.db.commit()
+        return self._map_to_model(db_delivery)
 
     def set_deliveryman(self, delivery: Delivery) -> Delivery:
-        for d in deliveries:
-            if d.id == delivery.id:
-                d.deliveryman = delivery.deliveryman
-                break
-
-        return delivery
+        db_delivery = self.db.query(DBDelivery).filter(
+            DBDelivery.id == delivery.id).first()
+        db_delivery.deliveryman_id = delivery.deliveryman.id
+        self.db.commit()
+        return self._map_to_model(db_delivery)
