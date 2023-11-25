@@ -16,7 +16,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build . --file Dockerfile --tag $DOCKER_USERNAME/delivery-service:latest
+          docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/delivery-service:latest
 
       - name: Test solution
         run: |
@@ -30,7 +30,7 @@ jobs:
 
       - name: Push tag to DockerHub
         run: |
-          docker push $DOCKER_USERNAME/delivery-service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/delivery-service:latest
 
   # deploy:
   #   runs-on: ubuntu-latest
