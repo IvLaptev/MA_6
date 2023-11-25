@@ -22,7 +22,14 @@ jobs:
         run: |
           echo There will be tests later
 
-      - name: Log in to DockerHub
+      - name: Login to YC registry
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: cr.yandex
+          username: json_key
+          password: ${{ secrets.YC_KEYS }}
+
+      - name: Login to DockerHub
         uses: docker/login-action@v3.0.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
