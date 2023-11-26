@@ -44,7 +44,7 @@ jobs:
         run: |
           docker build . --file Dockerfile --tag cr.yandex/${{ secrets.YC_REGISTRY_ID }}/delivery-service:latest
 
-      - name: Prepare tests
+      - name: Prepare unit tests
         run: |
           sudo apt update
           sudo apt install -y python3-pip
@@ -53,6 +53,18 @@ jobs:
       - name: Run unit tests
         run: |
           pytest ./tests/unit
+
+      - name: Prepare integration tests
+        run: |
+          sudo docker run -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:14
+
+      - name: Run integration tests
+        run: |
+          pytest ./tests/integration
+        env:
+          AMQP_URL: amqp://guest:guest123@51.250.26.59:5672/
+          POSTGRES_URL: postgresql://postgres:password@localhost:5432/postgres
+
 
       - name: Login to YC Registry
         uses: docker/login-action@v3.0.0
