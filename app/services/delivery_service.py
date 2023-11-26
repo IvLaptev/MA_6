@@ -1,10 +1,11 @@
 # /app/services/delivery_service.py
 
 from uuid import UUID
+from fastapi import Depends
 from datetime import datetime
 
 from app.models.delivery import Delivery, DeliveryStatuses
-from app.repositories.local_delivery_repo import DeliveryRepo
+from app.repositories.db_delivery_repo import DeliveryRepo
 from app.repositories.local_deliveryman_repo import DeliverymenRepo
 
 
@@ -12,8 +13,8 @@ class DeliveryService():
     delivery_repo: DeliveryRepo
     deliveryman_repo: DeliverymenRepo
 
-    def __init__(self) -> None:
-        self.delivery_repo = DeliveryRepo()
+    def __init__(self, delivery_repo: DeliveryRepo = Depends(DeliveryRepo)) -> None:
+        self.delivery_repo = delivery_repo
         self.deliveryman_repo = DeliverymenRepo()
 
     def get_deliveries(self) -> list[Delivery]:
