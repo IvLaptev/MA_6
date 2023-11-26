@@ -51,7 +51,7 @@ jobs:
           sleep 5
           alembic upgrade head
           sudo docker run -p 8000:80 -e AMQP_URL=amqp://guest:guest123@51.250.26.59:5672/ -e POSTGRES_URL=postgresql://postgres:password@host.docker.internal:5432/postgres -d back-tests
-          ыдууз 5
+          sleep 5
 
       - name: Run e2e tests
         run: |
