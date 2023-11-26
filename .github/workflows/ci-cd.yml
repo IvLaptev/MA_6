@@ -46,8 +46,8 @@ jobs:
       - name: Prepare e2e tests
         run: |
           sudo docker stop pg-tests
-          sudo docker run --name pg-tests -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:14
           sudo docker build . --file Dockerfile --tag back-tests
+          sudo docker run -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:14
           alembic upgrade head
           sudo docker run -p 8000:80 -d back-tests
 
