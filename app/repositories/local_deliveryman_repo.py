@@ -15,7 +15,7 @@ deliverymen: list[Deliveryman] = [
 ]
 
 class DeliverymenRepo():
-    def get_deliverymen() -> list[Deliveryman]:
+    def get_deliverymen(self) -> list[Deliveryman]:
         return deliverymen
 
     def get_deliveryman_by_id(self, id: UUID) -> Deliveryman:

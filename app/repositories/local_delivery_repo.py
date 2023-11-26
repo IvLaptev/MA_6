@@ -9,6 +9,10 @@ deliveries: list[Delivery] = []
 
 
 class DeliveryRepo():
+    def __init__(self, clear: bool = False) -> None:
+        if clear:
+            deliveries.clear()
+
     def get_deliveries(self) -> list[Delivery]:
         return deliveries
 
