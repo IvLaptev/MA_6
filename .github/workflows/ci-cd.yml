@@ -57,12 +57,12 @@ jobs:
       - name: Prepare integration tests
         run: |
           sudo docker run -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:14
-          alembic upgrade head
           rm ./.env
           echo "AMQP_URL=$AMQP_URL
           POSTGRES_URL=$POSTGRES_URL
           "
           echo "AMQP_URL=$AMQP_URL POSTGRES_URL=$POSTGRES_URL"
+          alembic upgrade head
         env:
           AMQP_URL: amqp://guest:guest123@51.250.26.59:5672/
           POSTGRES_URL: postgresql://postgres:password@localhost:5432/postgres
