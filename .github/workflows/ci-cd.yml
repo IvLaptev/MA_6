@@ -60,7 +60,7 @@ jobs:
           rm ./.env
           echo "AMQP_URL=$AMQP_URL
           POSTGRES_URL=$POSTGRES_URL
-          "
+          " > .env
           echo "AMQP_URL=$AMQP_URL POSTGRES_URL=$POSTGRES_URL"
           sleep 5
           alembic upgrade head
