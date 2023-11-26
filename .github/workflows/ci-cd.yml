@@ -62,6 +62,7 @@ jobs:
           POSTGRES_URL=$POSTGRES_URL
           "
           echo "AMQP_URL=$AMQP_URL POSTGRES_URL=$POSTGRES_URL"
+          sleep 5
           alembic upgrade head
         env:
           AMQP_URL: amqp://guest:guest123@51.250.26.59:5672/
