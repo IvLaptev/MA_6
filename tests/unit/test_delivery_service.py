@@ -1,9 +1,11 @@
+# /tests/unit/test_delivery_service.py
+
 import pytest
 from uuid import uuid4, UUID
 from datetime import datetime
 
 from app.services.delivery_service import DeliveryService
-from app.models.delivery import Delivery, DeliveryStatuses
+from app.models.delivery import DeliveryStatuses
 from app.repositories.local_delivery_repo import DeliveryRepo
 from app.repositories.local_deliveryman_repo import DeliverymenRepo
 
