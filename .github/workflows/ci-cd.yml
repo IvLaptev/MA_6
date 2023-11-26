@@ -54,7 +54,7 @@ jobs:
 
       - name: Run e2e tests
         run: |
-          pytest ./tests/integration
+          pytest ./tests/e2e
 
   build-and-push-to-dh:
     name: Build and push to DockerHub
