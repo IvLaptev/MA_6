@@ -57,6 +57,7 @@ jobs:
       - name: Prepare integration tests
         run: |
           sudo docker run -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:14
+          alembic upgrade head
 
       - name: Run integration tests
         run: |
