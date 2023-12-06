@@ -14,8 +14,6 @@ COPY ./app /code/app
 COPY ./migration /code/migration 
 COPY ./alembic.ini /code/alembic.ini
 
-EXPOSE 80
+RUN chmod +x /code/app/entrypoint.sh
 
-CMD ["/bin/sh", "-c", \
-    "alembic upgrade head && \
-    uvicorn app.main:app --host 0.0.0.0 --port 80"]
+ENTRYPOINT ["/code/app/entrypoint.sh"]
