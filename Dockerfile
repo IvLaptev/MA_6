@@ -13,7 +13,8 @@ COPY ./app /code/app
 # Копирование файлов alembic
 COPY ./migration /code/migration 
 COPY ./alembic.ini /code/alembic.ini
+COPY ./entrypoint.sh /code/entrypoint.sh
 
-RUN chmod +x /code/app/entrypoint.sh
+RUN chmod +x /code/entrypoint.sh
 
-ENTRYPOINT ["/code/app/entrypoint.sh"]
+ENTRYPOINT ["/code/entrypoint.sh"]
